@@ -8,6 +8,7 @@ use Module\Shop\DTO\StoreShopDTO;
 use Module\Shop\Http\Requests\StoreShopRequest;
 use Module\Shop\Http\Resource\ShopResource;
 use Module\Shop\UseCase\StoreShopUseCase;
+use Module\User\Models\User;
 
 class ShopController extends BaseController
 {
@@ -28,7 +29,7 @@ class ShopController extends BaseController
      */
     public function store(StoreShopRequest $request, StoreShopUseCase $useCase): ShopResource
     {
-        $shop = $useCase->handle(StoreShopDTO::fromArray($request->validated()));
+        $shop = $useCase->handle(StoreShopDTO::fromArray($request->validated()), auth()->user());
         return new ShopResource($shop);
     }
 

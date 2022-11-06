@@ -4,19 +4,27 @@ declare(strict_types=1);
 namespace Module\User\UseCase;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Module\User\DTO\SellerLoginDTO;
+use Module\User\Models\User;
+use function PHPUnit\Framework\isEmpty;
 
 class LoginUserUseCase
 {
     public function handle(SellerLoginDTO $DTO): array
     {
-        $user = Auth::attempt(['email' => $DTO->getEmail(), 'password' => $DTO->getPassword()]);
+        $user = User::query()->where('email', $DTO->getEmail())->first();
         if (!$user) {
-            return ['error' => 'Unauthorised'];
+            return User::UNAUTHORISED_ERROR;
         }
-        $authUser = Auth::user();
-        $success['token'] = $authUser->createToken('MyAuthApp')->plainTextToken;
-        $success['name'] = $authUser->name;
+        if (!Hash::check($DTO->getPassword(), $user->password)){
+            return User::WRONG_PASSWORD_ERROR;
+        }
+        if (isEmpty($user->newQuery()->with('shops')->get())){
+            return User::HAVA_NOT_STORE_ERROR;
+        }
+        $success['token'] = $user->createToken('MyAuthApp')->plainTextToken;
+        $success['name'] = $user->name;
         return  $success;
     }
 }

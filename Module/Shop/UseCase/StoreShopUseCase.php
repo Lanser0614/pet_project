@@ -5,6 +5,7 @@ namespace Module\Shop\UseCase;
 
 use Module\Shop\DTO\StoreShopDTO;
 use Module\Shop\Models\Shop;
+use Module\User\Models\User;
 
 class StoreShopUseCase
 {
@@ -12,7 +13,7 @@ class StoreShopUseCase
      * @param StoreShopDTO $DTO
      * @return Shop
      */
-    public function handle(StoreShopDTO $DTO): Shop
+    public function handle(StoreShopDTO $DTO, User $user): Shop
     {
         $shop = new Shop();
         $shop->name = $DTO->getName();
@@ -22,6 +23,9 @@ class StoreShopUseCase
         $shop->long = $DTO->getLong();
         $shop->lat = $DTO->getLat();
         $shop->save();
+        $user->role = User::SELLER_ROLE;
+        $user->save();
+        $user->shops()->attach($shop->id);
         return $shop;
     }
 }
