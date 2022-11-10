@@ -19,3 +19,8 @@ Route::prefix('/sellers')->middleware("api")->namespace('sellers-v1')->group(fun
     Route::post('/login', [SellerController::class, 'login'])->name('login');
     Route::get('/logout', [SellerController::class, 'logout'])->name('updateContent');
 });
+
+Route::prefix('/sellers')->middleware("auth:sanctum")->namespace('sellers-v1')->group(function () {
+    Route::get('/get-shops', [SellerController::class, 'getUserShops'])->name('seller.get-user-shops');
+
+});

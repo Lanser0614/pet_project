@@ -9,7 +9,7 @@ use Module\User\DTO\SellerLoginDTO;
 use Module\User\Models\User;
 use function PHPUnit\Framework\isEmpty;
 
-class LoginUserUseCase
+class LoginSellerUseCase
 {
     public function handle(SellerLoginDTO $DTO): array
     {

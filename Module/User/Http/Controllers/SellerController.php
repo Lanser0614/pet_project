@@ -11,13 +11,21 @@ use Module\User\DTO\SellerLoginDTO;
 use Module\User\Http\Requests\LoginRequest;
 use Module\User\Http\Requests\RegisterRequest;
 use Module\User\Http\Requests\VerifyPhoneRequest;
-use Module\User\Models\User;
-use Module\User\UseCase\LoginUserUseCase;
+use Module\User\Http\Resource\SellerResource;
+use Module\User\UseCase\GetAllStoreByUserIdUseCase;
+use Module\User\UseCase\LoginSellerUseCase;
 use Module\User\UseCase\StoreSellerUseCase;
 use Module\User\UseCase\VerifyPhoneUseCase;
 
 class SellerController extends BaseController
 {
+
+    public function getUserShops(GetAllStoreByUserIdUseCase $useCase)
+    {
+        $userShops = $useCase->handle(auth()->user());
+        return new SellerResource($userShops);
+    }
+
     /**
      * @param RegisterRequest $request
      * @param StoreSellerUseCase $useCase
@@ -36,7 +44,7 @@ class SellerController extends BaseController
      * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function login(LoginRequest $request, LoginUserUseCase $useCase): JsonResponse
+    public function login(LoginRequest $request, LoginSellerUseCase $useCase): JsonResponse
     {
         $success = $useCase->handle(DTO: SellerLoginDTO::fromArray($request->validated()));
         return $this->sendMessage($success);

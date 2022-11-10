@@ -5,7 +5,6 @@ namespace Module\User\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Module\Shop\Models\Shop;
@@ -20,17 +19,17 @@ class User extends Model
     const USER_ROLE = 'USER';
 
 
-    const UNAUTHORISED_ERROR = [
+    public const UNAUTHORISED_ERROR = [
         "error_message" => "UNAUTHORISED_ERROR",
         "code" => 401
     ];
 
-    const WRONG_PASSWORD_ERROR = [
+    public const WRONG_PASSWORD_ERROR = [
         "error_message" => "WRONG_PASSWORD",
         "code" => 600
     ];
 
-    const HAVA_NOT_STORE_ERROR = [
+    public const HAVA_NOT_STORE_ERROR = [
         "error_message" => "HAVA_NOT_STORE_ERROR",
         "code" => 700
     ];
@@ -57,7 +56,6 @@ class User extends Model
         return $this
             ->belongsToMany(Shop::class,
                 'user_shops', 'user_id', 'shop_id');
-
     }
 
 }
