@@ -9,7 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Module\Shop\Models\Shop;
 
-
+/**
+ * Class User.
+ *
+ * @property int $id
+ * @property string $email
+ * @property string $phone
+ */
 class User extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
