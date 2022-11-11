@@ -6,6 +6,16 @@ namespace Module\Shop\Models;
 use Illuminate\Database\Eloquent\Model;
 use Module\User\Models\User;
 
+/**
+ * Class Shop.
+ *
+ * @property int $name
+ * @property int $user_id
+ * @property string $description
+ * @property string $rating
+ * @property string $long
+ * @property string $lat
+ */
 class Shop extends Model
 {
 

@@ -11,6 +11,7 @@ class StoreShopUseCase
 {
     /**
      * @param StoreShopDTO $DTO
+     * @param User $user
      * @return Shop
      */
     public function handle(StoreShopDTO $DTO, User $user): Shop

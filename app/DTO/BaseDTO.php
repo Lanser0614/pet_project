@@ -8,7 +8,7 @@ use JsonSerializable;
 abstract class BaseDTO  implements JsonSerializable
 {
     /**
-     * @param array<mixed> $data
+     * @param array $data
      */
     abstract public static function fromArray(array $data): self;
 }

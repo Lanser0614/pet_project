@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Module\Shop\DTO\StoreShopDTO;
 use Module\Shop\Http\Requests\StoreShopRequest;
+use Module\Shop\Http\Resource\ProductResource;
 use Module\Shop\Http\Resource\ShopResource;
+use Module\Shop\UseCase\getAllShopPosroductsUseCase;
 use Module\Shop\UseCase\GetAllStoreUseCase;
 use Module\Shop\UseCase\GetStoreInfoUseCase;
 use Module\Shop\UseCase\StoreShopUseCase;
@@ -35,6 +37,11 @@ class ShopController extends BaseController
     {
         $shopInfo = $useCase->handle($id, auth()->user());
         return new ShopResource($shopInfo);
+    }
+
+    public function getAllShopProducts(int $id, getAllShopPosroductsUseCase $useCase)
+    {
+        return ProductResource::collection($useCase->handle($id));
     }
 
     /**

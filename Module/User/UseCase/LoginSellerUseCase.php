@@ -13,14 +13,14 @@ class LoginSellerUseCase
 {
     public function handle(SellerLoginDTO $DTO): array
     {
-        $user = User::query()->where('email', $DTO->getEmail())->first();
+        $user = User::query()->with(['shops'])->where('email', $DTO->getEmail())->first();
         if (!$user) {
             return User::UNAUTHORISED_ERROR;
         }
         if (!Hash::check($DTO->getPassword(), $user->password)){
             return User::WRONG_PASSWORD_ERROR;
         }
-        if (isEmpty($user->newQuery()->with('shops')->get())){
+        if (!isEmpty($user->shops)){
             return User::HAVA_NOT_STORE_ERROR;
         }
         $success['token'] = $user->createToken('MyAuthApp')->plainTextToken;

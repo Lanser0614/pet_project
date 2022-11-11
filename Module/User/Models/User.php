@@ -6,6 +6,7 @@ namespace Module\User\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Module\Shop\Models\Shop;
 
@@ -15,6 +16,10 @@ use Module\Shop\Models\Shop;
  * @property int $id
  * @property string $email
  * @property string $phone
+ * @property string $name
+ * @property string $password
+ * @property int $verify_code
+ * @property Carbon $phone_verified_at
  */
 class User extends Model
 {
@@ -24,6 +29,9 @@ class User extends Model
     const SELLER_ROLE = 'SELLER';
     const USER_ROLE = 'USER';
 
+    protected $dates = [
+        'phone_verified_at'
+    ];
 
     public const UNAUTHORISED_ERROR = [
         "error_message" => "UNAUTHORISED_ERROR",

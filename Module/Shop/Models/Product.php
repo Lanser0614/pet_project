@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Module\Product\Models;
+namespace Module\Shop\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Module\Shop\Models\Shop;
 
 /**
  * Class Product.
@@ -22,9 +21,6 @@ class Product extends Model
 {
     protected $table = 'products';
 
-    protected $casts = [
-        'product_attributes' => 'array'
-    ];
     /**
      * @return BelongsTo
      */

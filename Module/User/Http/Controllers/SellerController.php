@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Module\User\Http\Controllers;
 
+use App\Exceptions\BusinessException;
+use App\Exceptions\UseCaseException;
 use App\Http\Controllers\BaseController;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Module\User\DTO\SellerCreateDTO;
@@ -20,7 +23,11 @@ use Module\User\UseCase\VerifyPhoneUseCase;
 class SellerController extends BaseController
 {
 
-    public function getUserShops(GetAllStoreByUserIdUseCase $useCase)
+    /**
+     * @param GetAllStoreByUserIdUseCase $useCase
+     * @return SellerResource
+     */
+    public function getUserShops(GetAllStoreByUserIdUseCase $useCase): SellerResource
     {
         $userShops = $useCase->handle(auth()->user());
         return new SellerResource($userShops);
@@ -30,6 +37,7 @@ class SellerController extends BaseController
      * @param RegisterRequest $request
      * @param StoreSellerUseCase $useCase
      * @return JsonResponse
+     * @throws Exception
      */
     public function register(RegisterRequest $request, StoreSellerUseCase $useCase): \Illuminate\Http\JsonResponse
     {
@@ -42,6 +50,7 @@ class SellerController extends BaseController
 
     /**
      * @param LoginRequest $request
+     * @param LoginSellerUseCase $useCase
      * @return JsonResponse
      */
     public function login(LoginRequest $request, LoginSellerUseCase $useCase): JsonResponse
@@ -50,9 +59,19 @@ class SellerController extends BaseController
         return $this->sendMessage($success);
     }
 
+    /**
+     * @param VerifyPhoneRequest $request
+     * @param VerifyPhoneUseCase $useCase
+     * @return JsonResponse
+     * @throws Exception
+     */
     public function verify(VerifyPhoneRequest $request, VerifyPhoneUseCase $useCase): JsonResponse
     {
-        $token = $useCase->handle($request->input('phone'), $request->input('code'));
+        try {
+            $token = $useCase->handle($request->input('phone'), $request->input('code'));
+        } catch (UseCaseException $e) {
+            throw new BusinessException($e->getMessage());
+        }
         return $this->sendMessage([
             'token' => $token
         ]);
