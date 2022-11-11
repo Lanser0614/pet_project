@@ -9,7 +9,6 @@ use Module\Product\Models\Product;
 class StoreProductUseCase
 {
     /**
-     * @throws \JsonException
      */
     public function handle(StoreProductDTO $DTO): Product
     {
